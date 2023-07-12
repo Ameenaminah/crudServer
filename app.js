@@ -15,7 +15,7 @@ app.use(morgan("dev")); // how to use it
 app.use(express.json()); //it comes with the express. Without it, you cannot any request from the request body
 app.use(cors());
 app.use("/api/v1", crudRoute);
-const port = process.env.Port; //every app runs on a particular port number
+const port = process.env.PORT; //every app runs on a particular port number
 
 const DBConnectionString = process.env.Mongo_uri;
 const connectDB = async () => {
