@@ -5,15 +5,14 @@ const getAllCruds = async (req, res) => {
     const allCrud = await CrudModel.find().sort({ createdAt: -1 });
     return res.status(200).json(allCrud);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ err: "Internal Server Error" });
   }
 };
 
 const postCrud = async (req, res) => {
-  const { title, description } = req.body;
+  const { name, description, price, category, image } = req.body;
   try {
-    if (!title || !description) {
+    if (!name || !description || !price || !category || !image) {
       return res.status(400).json({ err: "Please fill in all fields" });
     }
 
@@ -21,8 +20,13 @@ const postCrud = async (req, res) => {
     // const crud = new CrudModel({ title, description });
     // await crud.save()
 
-    const crud = await CrudModel.create({ title, description });
-    console.log(crud);
+    const crud = await CrudModel.create({
+      name,
+      description,
+      price,
+      category,
+      image,
+    });
     return res.status(201).json(crud);
   } catch (error) {
     console.log(error);
@@ -32,7 +36,7 @@ const postCrud = async (req, res) => {
 
 const getACrud = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+
   // Also the same as the line 35, the different is line 88 is only getting a single id, while line 35 we can get different parameters
   // const id = req.params.id
   try {
@@ -48,7 +52,7 @@ const getACrud = async (req, res) => {
 };
 const patchCrud = async (req, res) => {
   const { id } = req.params;
-  const { title, description } = req.body;
+  const { name, description, price, category, image } = req.body;
   console.log(id);
   try {
     const crudUpdate = await CrudModel.findByIdAndUpdate(
@@ -70,13 +74,13 @@ const patchCrud = async (req, res) => {
 
 const deleteCrud = async (req, res) => {
   const { id } = req.params;
-  
+
   try {
-   const crudDelete = await CrudModel.findById(id);
+    const crudDelete = await CrudModel.findById(id);
     if (!crudDelete) {
       return res.status(404).json({ msg: "Data not found" });
     }
-    await CrudModel.deleteOne(crudDelete)
+    await CrudModel.deleteOne(crudDelete);
     return res.status(200).json({ msg: "Deleted successfully" });
   } catch (error) {
     console.log(error);
